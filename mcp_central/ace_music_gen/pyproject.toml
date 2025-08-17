@@ -1,0 +1,33 @@
+[project]
+name = "ace-music-gen"
+version = "0.1.0"
+description = "基于ACE-Step的音乐生成工具包"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "librosa>=0.9.0",
+    "numpy>=1.21.0",
+    "requests>=2.25.0",
+    "pesq>=0.0.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "black>=21.0",
+    "isort>=5.0",
+]
+
+[project.scripts]
+ace-music-gen = "ace_music_gen.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.isort]
+profile = "black"
