@@ -165,7 +165,7 @@ class SimpleACEMusicGen:
 def main():
     """主函数，用于命令行使用"""
     generator = SimpleACEMusicGen()
-    generator.setup_api("sk-8f735e8d4a944cc7a0d00f9c2062fbde")
+    generator.setup_api("your key")
     
     print("告诉我你想要什么样的音乐，我会生成参数并直接创建音乐！")
     
