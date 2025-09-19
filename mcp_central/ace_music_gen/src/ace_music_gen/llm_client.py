@@ -2,21 +2,75 @@
 
 import json
 import requests
-from typing import Dict
+from typing import Dict, List, Union, Optional
 
 
 class LLMClient:
     """LLM API客户端"""
-    
+
     def __init__(self, api_key: str = None, base_url: str = None, model: str = None):
         self.api_key = api_key
         self.base_url = base_url or "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
         self.model = model or "qwen-turbo-latest"
-    
+
     def setup_api(self, api_key: str):
         """设置API密钥"""
         self.api_key = api_key
-    
+
+    def chat_completion(
+        self,
+        messages: Union[List[Dict], List['LLMExchange']],
+        temperature: float = 0.7,
+        max_tokens: int = 2000
+    ) -> str:
+        """通用的聊天补全接口
+
+        Args:
+            messages: 消息列表，可以是Dict格式或LLMExchange对象
+            temperature: 温度参数
+            max_tokens: 最大token数
+
+        Returns:
+            LLM的响应内容
+        """
+        if not self.api_key:
+            raise ValueError("API密钥未设置，请先调用setup_api()或在构造函数中提供api_key")
+
+        # 转换消息格式
+        formatted_messages = []
+        for msg in messages:
+            if hasattr(msg, 'to_dict'):  # LLMExchange对象
+                formatted_messages.append(msg.to_dict())
+            else:  # 普通字典
+                formatted_messages.append(msg)
+
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+
+        data = {
+            "model": self.model,
+            "messages": formatted_messages,
+            "temperature": temperature,
+            "max_tokens": max_tokens
+        }
+
+        try:
+            response = requests.post(self.base_url, headers=headers, json=data, timeout=30)
+            response.raise_for_status()
+
+            result = response.json()
+            content = result["choices"][0]["message"]["content"]
+            return content.strip()
+
+        except requests.exceptions.RequestException as e:
+            raise Exception(f"API请求失败: {str(e)}")
+        except KeyError as e:
+            raise Exception(f"API响应格式错误: {str(e)}")
+        except Exception as e:
+            raise Exception(f"LLM调用失败: {str(e)}")
+
     def generate_music_params(self, user_idea: str) -> Dict[str, str]:
         """生成音乐参数"""
         system_prompt = """你是一个专业的中文音乐创作AI助手，专门为ACE-Step音乐生成模型创作内容。

@@ -45,13 +45,13 @@ class AudioEvaluator:
             recommendations = self._generate_recommendations(audio_features, quality_scores)
             
             return {
-                "overall_score": overall_score,
+                "overall_score": float(overall_score),
                 "audio_features": audio_features,
                 "quality_scores": quality_scores,
                 "recommendations": recommendations,
                 "analysis_info": {
-                    "duration": len(y) / sr,
-                    "sample_rate": sr,
+                    "duration": float(len(y) / sr),
+                    "sample_rate": int(sr),
                     "channels": 1 if y.ndim == 1 else y.shape[0]
                 }
             }
@@ -65,60 +65,60 @@ class AudioEvaluator:
     def _analyze_audio_features(self, y, sr):
         """分析音频特征"""
         features = {}
-        
+
         # 频谱质心 (音色亮度)
         spectral_centroids = librosa.feature.spectral_centroid(y=y, sr=sr)[0]
-        features['spectral_centroid_mean'] = np.mean(spectral_centroids)
-        features['spectral_centroid_std'] = np.std(spectral_centroids)
-        
+        features['spectral_centroid_mean'] = float(np.mean(spectral_centroids))
+        features['spectral_centroid_std'] = float(np.std(spectral_centroids))
+
         # RMS能量 (响度)
         rms = librosa.feature.rms(y=y)[0]
-        features['rms_mean'] = np.mean(rms)
-        features['rms_std'] = np.std(rms)
-        
+        features['rms_mean'] = float(np.mean(rms))
+        features['rms_std'] = float(np.std(rms))
+
         # 零交叉率 (音频纯净度)
         zcr = librosa.feature.zero_crossing_rate(y)[0]
-        features['zcr_mean'] = np.mean(zcr)
-        
+        features['zcr_mean'] = float(np.mean(zcr))
+
         # MFCC特征 (音色特征)
         mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)
-        features['mfcc_mean'] = np.mean(mfccs, axis=1).tolist()
-        
+        features['mfcc_mean'] = [float(x) for x in np.mean(mfccs, axis=1)]
+
         # 频谱对比度
         spectral_contrast = librosa.feature.spectral_contrast(y=y, sr=sr)
-        features['spectral_contrast_mean'] = np.mean(spectral_contrast)
-        
+        features['spectral_contrast_mean'] = float(np.mean(spectral_contrast))
+
         return features
     
     def _calculate_quality_scores(self, y, sr):
         """计算音频质量分数"""
         scores = {}
-        
+
         # 动态范围
         dynamic_range = np.max(y) - np.min(y)
-        scores['dynamic_range'] = min(dynamic_range * 10, 10.0)  # 归一化到0-10
-        
+        scores['dynamic_range'] = float(min(dynamic_range * 10, 10.0))  # 归一化到0-10
+
         # 信噪比估算
         rms = librosa.feature.rms(y=y)[0]
         snr_estimate = 20 * np.log10(np.mean(rms) / (np.std(rms) + 1e-10))
-        scores['snr_estimate'] = min(max(snr_estimate / 10, 0), 10.0)  # 归一化到0-10
-        
+        scores['snr_estimate'] = float(min(max(snr_estimate / 10, 0), 10.0))  # 归一化到0-10
+
         # 频谱平衡度
         freqs = np.abs(np.fft.fft(y))
         freq_balance = 1.0 - np.std(freqs) / (np.mean(freqs) + 1e-10)
-        scores['frequency_balance'] = min(max(freq_balance * 10, 0), 10.0)
-        
+        scores['frequency_balance'] = float(min(max(freq_balance * 10, 0), 10.0))
+
         # 如果有PESQ，计算感知质量
         if self.has_pesq and sr == 16000:  # PESQ需要16kHz采样率
             try:
                 # 对于单通道音频，与自身比较作为参考
                 pesq_score = pesq(sr, y, y, 'wb')  # 宽带模式
-                scores['pesq_score'] = pesq_score
+                scores['pesq_score'] = float(pesq_score)
             except:
                 scores['pesq_score'] = None
         else:
             scores['pesq_score'] = None
-            
+
         return scores
     
     def _calculate_overall_score(self, features, scores):
@@ -147,7 +147,7 @@ class AudioEvaluator:
             total_score += pesq_normalized * 0.2
             count += 0.2
             
-        return total_score / count if count > 0 else 5.0
+        return float(total_score / count) if count > 0 else 5.0
     
     def _generate_recommendations(self, features, scores):
         """生成改进建议"""

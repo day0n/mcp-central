@@ -4,22 +4,59 @@ version = "0.1.0"
 description = "基于ACE-Step的音乐生成工具包"
 readme = "README.md"
 requires-python = ">=3.8"
+authors = [
+    { name = "ACE Music Gen Team" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
 dependencies = [
     "librosa>=0.9.0",
     "numpy>=1.21.0",
     "requests>=2.25.0",
     "pesq>=0.0.4",
+    "scipy>=1.7.0",
+    "soundfile>=0.10.0",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.20.0",
+    "pydantic>=2.0.0",
+    "pyyaml>=6.0",
 ]
 
 [project.optional-dependencies]
+spleeter = [
+    "spleeter>=2.3.0",
+    "tensorflow>=2.5.0,<2.16.0",
+]
 dev = [
     "pytest>=6.0",
     "black>=21.0",
     "isort>=5.0",
+    "ruff>=0.1.0",
+]
+test = [
+    "pytest>=6.0",
+    "pytest-cov>=4.0",
+    "pytest-asyncio>=0.21.0",
 ]
 
 [project.scripts]
 ace-music-gen = "ace_music_gen.main:main"
+ace-music-agent = "ace_music_gen.agent_main:main"
+ace-mcp-server = "ace_step_mcp.server:main"
+
+[project.urls]
+Homepage = "https://github.com/your-org/ace-music-gen"
+Repository = "https://github.com/your-org/ace-music-gen"
+Issues = "https://github.com/your-org/ace-music-gen/issues"
 
 [build-system]
 requires = ["hatchling"]
@@ -28,6 +65,72 @@ build-backend = "hatchling.build"
 [tool.black]
 line-length = 88
 target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+    # directories
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
 
 [tool.isort]
 profile = "black"
+multi_line_output = 3
+line_length = 88
+
+[tool.ruff]
+line-length = 88
+target-version = "py38"
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+ignore = [
+    "E501",  # line too long, handled by black
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --strict-markers"
+testpaths = [
+    "tests",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "tests/*",
+    "*/test_*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
