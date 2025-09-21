@@ -1,0 +1,30 @@
+{
+  "session_id": "d8c7938e-1ba4-4493-936e-d681f9d44e28",
+  "timestamp": "2025-09-19T18:39:08.137048",
+  "success": false,
+  "generation_result": {
+    "audio_paths": [],
+    "metadata": {},
+    "error": "Agent运行失败: EOF when reading a line",
+    "generation_time": null
+  },
+  "session_details": {
+    "session_id": "d8c7938e-1ba4-4493-936e-d681f9d44e28",
+    "created_at": "2025-09-19T18:39:08.135013",
+    "updated_at": "2025-09-19T18:39:08.135050",
+    "conversation_history": [],
+    "user_requirement": null,
+    "lyrics_versions": [],
+    "selected_lyrics": null,
+    "generation_params": null,
+    "generation_result": null,
+    "current_stage": "failed",
+    "debug_logs": [
+      "[2025-09-19 18:39:08] Stage transition: init -> collecting_requirements",
+      "[2025-09-19 18:39:08] 开始交互式音乐生成流程",
+      "[2025-09-19 18:39:08] Agent运行失败: EOF when reading a line",
+      "[2025-09-19 18:39:08] Stage transition: collecting_requirements -> failed"
+    ],
+    "config": {}
+  }
+}

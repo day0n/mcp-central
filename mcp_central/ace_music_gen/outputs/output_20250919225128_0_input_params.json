@@ -1,0 +1,125 @@
+{
+    "format": "wav",
+    "lora_name_or_path": "ACE-Step/ACE-Step-v1-chinese-rap-LoRA",
+    "lora_weight": 1.0,
+    "task": "text2music",
+    "prompt": "Pop, emotional, male vocals, clear pronunciation, professional production",
+    "lyrics": "清晨阳光轻轻洒，  \n脚步慢慢走着花，  \n烦恼随风飘远啦，  \n心里种下小希望。",
+    "audio_duration": 30.0,
+    "infer_step": 60,
+    "guidance_scale": 15,
+    "scheduler_type": "euler",
+    "cfg_type": "apg",
+    "omega_scale": 10,
+    "guidance_interval": 0.3,
+    "guidance_interval_decay": 0,
+    "min_guidance_scale": 3,
+    "use_erg_tag": true,
+    "use_erg_lyric": false,
+    "use_erg_diffusion": true,
+    "oss_steps": [],
+    "timecosts": {
+        "preprocess": 1.1235368251800537,
+        "diffusion": 129.91725897789001,
+        "latent2audio": 13.15864896774292
+    },
+    "actual_seeds": [
+        919593382
+    ],
+    "retake_seeds": [
+        3960658978
+    ],
+    "retake_variance": 0.5,
+    "guidance_scale_text": 0,
+    "guidance_scale_lyric": 0,
+    "repaint_start": 0,
+    "repaint_end": 0,
+    "edit_n_min": 0.0,
+    "edit_n_max": 1.0,
+    "edit_n_avg": 1,
+    "src_audio_path": null,
+    "edit_target_prompt": null,
+    "edit_target_lyrics": null,
+    "audio2audio_enable": false,
+    "ref_audio_strength": 0.5,
+    "ref_audio_input": null,
+    "guidance_schedule": [
+        {
+            "position": 0.0,
+            "scale": 10.0
+        },
+        {
+            "position": 0.4,
+            "scale": 16.0
+        },
+        {
+            "position": 0.8,
+            "scale": 12.0
+        },
+        {
+            "position": 1.0,
+            "scale": 8.0
+        }
+    ],
+    "guidance_schedule_active": true,
+    "candidate_count": 1,
+    "selected_index": 0,
+    "selected_audio_path": "./outputs/output_20250919225128_0.wav",
+    "selected_score": 3.8469388242810965,
+    "text_cache_enabled": true,
+    "lyric_cache_enabled": true,
+    "cache_stats": {
+        "text_hits": 1,
+        "text_misses": 0,
+        "lyric_hits": 0,
+        "lyric_misses": 1
+    },
+    "audio_path": "./outputs/output_20250919225128_0.wav",
+    "track_index": 0,
+    "processor_logs": [],
+    "score": 3.8469388242810965,
+    "scoring_details": {
+        "evaluation": {
+            "overall_score": 3.8469388242810965,
+            "audio_features": {
+                "spectral_centroid_mean": 1806.970335116698,
+                "spectral_centroid_std": 1882.5742040065074,
+                "rms_mean": 0.153058260679245,
+                "rms_std": 0.10709141939878464,
+                "zcr_mean": 0.028217571438124107,
+                "mfcc_mean": [
+                    -293.4344177246094,
+                    132.32415771484375,
+                    19.26563262939453,
+                    26.698455810546875,
+                    4.454732418060303,
+                    18.686206817626953,
+                    3.700500011444092,
+                    16.700042724609375,
+                    4.008871078491211,
+                    3.1619508266448975,
+                    11.260296821594238,
+                    2.9135091304779053,
+                    4.656579971313477
+                ],
+                "spectral_contrast_mean": 19.203511246711
+            },
+            "quality_scores": {
+                "dynamic_range": 10.0,
+                "snr_estimate": 0.31020423769950867,
+                "frequency_balance": 0.0,
+                "pesq_score": null
+            },
+            "recommendations": [
+                "动态范围很好，音频层次丰富",
+                "音频可能存在噪声问题，建议降噪处理",
+                "频谱分布不够均衡，建议调整EQ"
+            ],
+            "analysis_info": {
+                "duration": 29.9073125,
+                "sample_rate": 48000,
+                "channels": 1
+            }
+        }
+    }
+}
